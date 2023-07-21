@@ -90,3 +90,17 @@ export async function deleteClient(req, res) {
           return res.status(500).send('Erro interno do servidor: ' + error.message);
      }
 }
+
+
+export async function deleteClients(req, res) {
+     const {ids} = req.body;
+
+     if(!ids || ids.length == 0) return res.status(400).send('É necessário passar os ids dos clientes corretamente via body.ids[]');
+     try {
+          await db.collection('clients').deleteMany({id:{$in: ids}});
+          return res.status(202).send('Clientes removidos com sucesso!');
+     } catch (error) {
+          console.log(error);
+          return res.status(500).send('Erro interno do servidor: ' + error.message);
+     }
+}
